@@ -8,7 +8,7 @@ namespace simulation
         private static int TNow { get; set; } = 0;
 
         private static int NQ { get => Queue.Count; }
-        private static int NR { get => EreignisListe.Count; }
+        private static int NR { get; set; } = 0;
 
         public static List<Ereignis> EreignisListe = new();
         public static List<Guest> Queue = new();
@@ -30,7 +30,8 @@ namespace simulation
                 TNow += ai;
                 InactiveTime += ai;
                 var isServed = machine1.Process(Queue[0], TNow); //gast ist gekommen
-                
+                NR = 1;
+
                 //gast wird bedient
                 int bz = GetBedienZeit();
                 TNow += bz; 
@@ -38,6 +39,7 @@ namespace simulation
 
                 //gast geht
                 machine1.Geht(isServed, TNow); //gast geht
+                NR = 0;
                 MakeBreak(5);
             }
             double loadFactor = Math.Round(Convert.ToDouble(ActiveTime) / Convert.ToDouble(ActiveTime + InactiveTime), 2);
